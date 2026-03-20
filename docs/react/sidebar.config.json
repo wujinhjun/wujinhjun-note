@@ -1,0 +1,20 @@
+{
+  "index.md": {
+    "metadata": {
+      "title": "概览",
+      "path": "/react/"
+    }
+  },
+  "0-preface.md": {
+    "metadata": {
+      "title": "为什么会有这组文章",
+      "path": "/react/0-preface"
+    }
+  },
+  "1-why-react-needs-fiber.md": {
+    "metadata": {
+      "title": "React 为什么需要 Fiber",
+      "path": "/react/1-why-react-needs-fiber"
+    }
+  }
+}
