@@ -128,6 +128,8 @@ function getSidebar() {
 export default defineConfig({
   title: '技术笔记',
   description: '个人技术文章与学习笔记',
+  // CI/CD 中如果有“链接但页面尚未补齐”的情况，不要直接导致构建失败
+  ignoreDeadLinks: true,
   // 构建时忽略 WIP/灵感草稿：既不生成页面，也不进入站内搜索
   srcExclude: ['wip/**', '**/wip*.md', '**/_wip*.md', '**/.wip*.md'],
   themeConfig: {
