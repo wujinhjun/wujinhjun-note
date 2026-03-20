@@ -1,9 +1,3 @@
----
-metadata:
-  title: 为什么会有这篇文章
-  path: /react/0-preface
----
-
 # 为什么会有这篇文章
 
 ## 前言
