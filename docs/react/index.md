@@ -20,33 +20,41 @@ React 相关技术文章与学习记录。
 
   突然发现不知不觉间，自己已经从一个 HCI 背景的 designer 变成了一个合格的前端工程师，对于 React 的理解也已经从简单的写 jsx 变成了对 Fiber 架构也是略懂一二的人，所以我想借此机会，梳理一下自己的概念，一方面帮助自己更好的理清思路，另一方面，也希望能够帮助到各位
 
-* [React 为什么必须重写为 Fiber](./1-why-react-needs-fiber.md)
+* [React 为什么必须重写为 Fiber - WIP](./1-why-react-needs-fiber.md)
 
   从 Stack Reconciler 的局限讲起，解释为什么 React 需要可中断、可恢复、可排序的更新模型。Fiber 不是一次普通的性能优化，而是为了调度能力而进行的架构大迭代。
 
-* [FiberNode：React 内核中的工作单元](./what-is-a-fiber-node.md)
+* [FiberNode：React 内核中的工作单元 - WIP](./what-is-a-fiber-node.md)
 
   这一篇会拆开 FiberNode 的关键字段，说明它为什么同时承载了树结构、组件状态、优先级信息和副作用标记。理解 FiberNode，才能真正理解 React 为什么能把“递归组件树”改造成“可调度的工作单元”。
 
-* [Scheduler 与 Lanes：React 如何决定谁先更新](./scheduler-and-lanes.md)
+* [Hooks: React 如何在函数组件中保存状态和副作用 - WIP](./what-is-hooks.md)
+
+  函数组件没有 `this`、也没有类实例，状态与「上一次渲染留下的信息」却必须在多次调用之间保持一致。这篇会从运行时视角说明：Hooks 如何通过固定的调用顺序与 Fiber 上的 `memoizedState` 链表对齐，Dispatcher 如何在 render 与 commit 之间切换语义，以及 `useEffect` / `useLayoutEffect` 这类 API 为何被设计成「在 render 里声明、在提交链路里执行」。
+
+* [Scheduler 与 Lanes：React 如何决定谁先更新 - WIP](./scheduler-and-lanes.md)
 
   React 不会把所有更新一视同仁。用户输入、过渡更新、空闲任务有不同的紧急程度，这篇会从调度视角解释 lanes 的意义，以及 React 如何组织优先级、避免饥饿并推动整棵树向前执行。
 
-* [Reconciler：React 如何构造下一棵树](./how-reconciler-works.md)
+* [Reconciler：React 如何构造下一棵树 - WIP](./how-reconciler-works.md)
 
   render 阶段的本质不是“直接改 DOM”，而是遍历 Fiber 树并构造 workInProgress 树。这篇会串起 beginWork、completeWork、bailout 与双缓存树，说明 React 如何把一次更新拆成可中断的增量计算过程。
 
-* [Children Diff：节点复用、移动与 Key 的本质](./children-diff.md)
+* [Children Diff：节点复用、移动与 Key 的本质 - WIP](./children-diff.md)
 
   children diff 是 React 协调过程里最容易被误解的部分。这里不会停留在“key 很重要”这种层面，而是会进一步分析 React 如何处理单节点、多节点、插入、删除和移动，以及它为什么选择启发式算法而不是最优算法。
 
-* [副作用系统：React 如何描述一次界面变更](./effect-flags-and-side-effects.md)
+* [副作用系统：React 如何描述一次界面变更 - WIP](./effect-flags-and-side-effects.md)
 
   render 阶段不会直接执行 DOM 操作，而是收集副作用。这篇会解释 Placement、Update、Deletion、Passive、Layout 等副作用是如何被编码和聚合的，以及 React 为什么要先生成一份“变更说明书”，再统一进入提交阶段。
 
-* [Commit 阶段：为什么最终提交不能中断](./why-commit-cannot-be-interrupted.md)
+* [Commit 阶段：为什么最终提交不能中断 - WIP](./why-commit-cannot-be-interrupted.md)
 
   render 可以中断，commit 不能中断。这不是限制，而是 React 为了一致性做出的主动选择。这篇会分析 before mutation、mutation、layout 三个子阶段，以及 DOM、ref、layout effect、passive effect 之间的执行时序和设计原因。
+
+* [番外：React 的第三方库实现 - WIP](./third-party-libraries.md)
+
+  主线讲完内核之后，这篇从**生态**侧收尾：会拆解一些有趣的第三方库，来分析它们是如何在 React 的基础上进行的生态拓展
 
 ## 为什么先写前言篇
 
