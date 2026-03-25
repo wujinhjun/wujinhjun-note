@@ -11,7 +11,7 @@
       "path": "/react/0-preface"
     }
   },
-  "1-why-react-needs-fiber": {
+  "1-why-react-needs-fiber.md": {
     "metadata": {
       "title": "React 为什么需要 Fiber",
       "path": "/react/1-why-react-needs-fiber"
