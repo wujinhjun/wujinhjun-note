@@ -145,7 +145,11 @@ export default defineConfig({
     repo: 'wujinhjun/wujinhjun-note',
     docsDir: 'docs',
     editLinks: true,
-    lastUpdated: true,
+    // 页面页尾“最后编辑时间”的文案与格式（显示在每个页面底部）
+    lastUpdated: {
+      text: '最后编辑于',
+      formatOptions: { dateStyle: 'medium', timeStyle: 'short' },
+    },
     socialLinks: [{ icon: 'github', link: 'https://github.com/wujinhjun/wujinhjun-note' }],
   },
 });
