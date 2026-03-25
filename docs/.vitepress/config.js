@@ -5,6 +5,7 @@ import { fileURLToPath } from 'url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const docsDir = path.join(__dirname, '..');
+const basePath = '/wujinhjun-note/';
 
 /** 根据 docs 目录结构自动生成侧边栏 */
 function extractPageMetadata(mdFilePath) {
@@ -128,14 +129,23 @@ function getSidebar() {
 export default defineConfig({
   title: '技术笔记',
   description: '个人技术文章与学习笔记',
-  base: '/wujinhjun-note/',
+  base: basePath,
   // CI/CD 中如果有“链接但页面尚未补齐”的情况，不要直接导致构建失败
   ignoreDeadLinks: true,
   // 构建时忽略 WIP/灵感草稿：既不生成页面，也不进入站内搜索
   srcExclude: ['wip/**', '**/wip*.md', '**/_wip*.md', '**/.wip*.md'],
+  head: [
+    ['link', { rel: 'alternate', type: 'application/rss+xml', title: '技术笔记 RSS', href: `${basePath}rss.xml` }],
+    ['link', { rel: 'alternate', type: 'application/rss+xml', title: '随笔 RSS', href: `${basePath}essays/rss.xml` }],
+  ],
   themeConfig: {
     nav: [{ text: '首页', link: '/' }],
     sidebar: getSidebar(),
-    socialLinks: [{ icon: 'github', link: 'https://github.com' }],
+    // 用于底部“编辑此页/仓库链接”等能力（如果当前主题版本支持）
+    repo: 'wujinhjun/wujinhjun-note',
+    docsDir: 'docs',
+    editLinks: true,
+    lastUpdated: true,
+    socialLinks: [{ icon: 'github', link: 'https://github.com/wujinhjun/wujinhjun-note' }],
   },
 });
