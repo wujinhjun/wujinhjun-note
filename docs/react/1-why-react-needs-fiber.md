@@ -102,7 +102,7 @@ React 后来的一个重要思想是：render 可以中断，commit 不能中断
 
 在旧的 React 架构里，React 的很多工作是完全依附于 JavaScript 调用过程的，调用一旦开始，遍历就随着调用栈一层层推进。而在 Fiber 架构里，React 把这部分工作显式地表示成一个个 Fiber 节点。每个 Fiber 都不只是树里的一个点，更代表一份可以被处理、被暂停、被恢复的工作。
 
-所以，React 通过 Fiber 架构，将原本调用栈中的许多隐式调用上下文放到了自己可以操作的数据结构中。那什么叫做隐式上下文呢，其实可以参考一些 LeetCode 题目：[LeetCode 112.路径综合](https://leetcode.cn/problems/path-sum/description/)，从递归写法改造成迭代写法（类似的题目都可以），所额外增加的信息就是递归调用时的隐式上下文。当然，React 的数据结构要比二叉树负责的多，具体的实现细节我们可以在下一节再展开。
+所以，React 通过 Fiber 架构，将原本调用栈中的许多隐式调用上下文放到了自己可以操作的数据结构中。那什么叫做隐式上下文呢，其实可以参考一些 LeetCode 题目：[LeetCode 112.路径总和](https://leetcode.cn/problems/path-sum/description/)，从递归写法改造成迭代写法（类似的题目都可以），所额外增加的信息就是递归调用时的隐式上下文。当然，React 的数据结构要比二叉树负责的多，具体的实现细节我们可以在下一节再展开。
 
 也就是说，React 通过 Fiber 架构，把原本完全交给 JavaScript 的调用栈拿到了自己的手里，从递归改造成了迭代，从而通过 Scheduler 进行更细粒度的调度。
 
