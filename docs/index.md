@@ -6,3 +6,5 @@
 
 - [React](/react/) - React 相关笔记
 - [Sentry](/sentry/) - Sentry 相关笔记
+
+- [随笔](/essays) - 一些随性的随笔杂谈

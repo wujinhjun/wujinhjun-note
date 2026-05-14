@@ -1,0 +1,14 @@
+{
+  "index.md": {
+    "metadata": {
+      "title": "概览",
+      "path": "/essays/"
+    }
+  },
+  "learning-in-the-ai-era.md": {
+    "metadata": {
+      "title": "AI 时代的学习思考",
+      "path": "/essays/learning-in-the-ai-era"
+    }
+  }
+}

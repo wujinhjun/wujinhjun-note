@@ -6,6 +6,9 @@ import { fileURLToPath } from 'url';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const docsDir = path.join(__dirname, '..');
 const basePath = '/wujinhjun-note/';
+const sidebarGroupTitles = {
+  essays: '随笔',
+};
 
 /** 根据 docs 目录结构自动生成侧边栏 */
 function extractPageMetadata(mdFilePath) {
@@ -41,6 +44,7 @@ function loadSidebarConfig(dirPath) {
   // 每个目录下放置一个目录级配置文件，例如：
   // docs/react/sidebar.config.json
   // {
+  //   "title": "React",
   //   "index.md": { "metadata": { "title": "...", "path": "/react/" } },
   //   "0-preface.md": { "metadata": { "title": "...", "path": "/react/0-preface" } }
   // }
@@ -116,8 +120,12 @@ function getSidebar() {
     });
 
     if (items.length > 0) {
+      const groupTitle =
+        sidebarGroupTitles[dir.name] ||
+        dir.name.charAt(0).toUpperCase() + dir.name.slice(1);
+
       sidebar.push({
-        text: dir.name.charAt(0).toUpperCase() + dir.name.slice(1),
+        text: groupTitle,
         items,
       });
     }
