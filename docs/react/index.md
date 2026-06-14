@@ -24,7 +24,7 @@ React 相关技术文章与学习记录。
 
   从 Stack Reconciler 的局限讲起，解释为什么 React 需要可中断、可恢复、可排序的更新模型。Fiber 不是一次普通的性能优化，而是为了调度能力而进行的架构大迭代。
 
-* [FiberNode：React 内核中的工作单元 - WIP](./2-what-is-a-fiber-node.md)
+* [FiberNode：React 内核中的工作单元](./2-what-is-a-fiber-node.md)
 
   这一篇会拆开 FiberNode 的关键字段，说明它为什么同时承载了树结构、组件状态、优先级信息和副作用标记。理解 FiberNode，才能真正理解 React 为什么能把“递归组件树”改造成“可调度的工作单元”。
 
