@@ -16,5 +16,11 @@
       "title": "React 为什么需要 Fiber",
       "path": "/react/1-why-react-needs-fiber"
     }
+  },
+  "2-what-is-a-fiber-node.md": {
+    "metadata": {
+      "title": "FiberNode：React 内核中的工作单元",
+      "path": "/react/2-what-is-a-fiber-node.md"
+    }
   }
 }
