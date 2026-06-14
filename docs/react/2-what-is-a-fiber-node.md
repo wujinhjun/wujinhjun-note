@@ -12,7 +12,7 @@
 
 真正被 React 拿来当作"work unit"推进的，是 FiberNode。
 
-我们写下的每一个组件、每一个宿主节点（比如 `div`、`ul`），在 React 的运行时里都会对应一个 FiberNode。它不只是树里的一个点，它还持有这个节点的状态、更新队列、副作用标记、优先级信息……可以说，React 对于掌控每一个节点所需要的信息，都挂载在对应的 FiberNode 上（好抽象一句话）。
+粗略地说，我们写下的每一个组件、每一个宿主节点（比如 `div`、`ul`），在 React 的运行时里都会对应一个 FiberNode。它不只是树里的一个点，它还持有这个节点的状态、更新队列、副作用标记、优先级信息……可以说，React 对于掌控每一个节点所需要的信息，都挂载在对应的 FiberNode 上（好抽象一句话）。
 
 如果说 ReactElement  这个 UI 描述符是"开发者希望这里渲染什么"，那 FiberNode 解决的就是"React 该怎么把这种预期一步步落到宿主环境里"。
 
@@ -102,7 +102,7 @@ function FiberNode(
 }
 ```
 
-值得一提的是，React 19 在这个构造函数之外还引入了 `enableObjectFiber` 开关。当开启时，`createFiber` 会使用对象字面量（`createFiberImplObject`）而非 `new FiberNode()` 来创建 Fiber，目的是在非 JIT 环境下获得更好的性能——但字段是完全一样的。所以无论哪种创建方式，我们前面讨论的六组数据，在源码里都是一一对应的。当然，如果有熟悉 Sentry 的朋友也会发现，通过工厂方法来调用在 Sentry 中也是十分的常见。关于这一点，我们后面有机会再进行展开（挖坑ing）
+值得一提的是，React 19 在这个构造函数之外还引入了 `enableObjectFiber` 开关。当开启时，`createFiber` 会使用对象字面量（`createFiberImplObject`）而非 `new FiberNode()` 来创建 Fiber，目的是在非 JIT 环境下获得更好的性能——但字段是完全一样的。所以无论哪种创建方式，我们前面讨论的六组数据，在源码里都是一一对应的。当然，如果工程化经验比较丰富的小伙伴也大都有工厂方法的使用、封装经验，如果想要进一步了解，也可以去参考学习一下 sentry。
 
 整个 FiberNode 并不复杂，但它承载了 React 运行时几乎所有关键的上下文信息。
 
