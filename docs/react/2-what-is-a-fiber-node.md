@@ -20,7 +20,7 @@
 
 既然组件和 FiberNode 是两码事，那 React 是怎么从一个过渡到另一个的？
 
-我们写 JSX，实际上是 `React.createElement` 的语法糖，产物是一个 ReactElement——一个不可变的普通对象（plain object, 我们也可以借用 flutter 的概念，称之为 UI 描述符），描述的是"这里应该渲染什么"。但 ReactElement 自己不参与调度，也不持有状态，它就像是一个目标图纸，只描绘，不实施。
+我们写 JSX，实际上是 `React.createElement` 或者 `jsx、jsxs` 的语法糖，产物是一个 ReactElement——一个不可变的普通对象（plain object, 我们也可以借用 flutter 的概念，称之为 UI 描述符），描述的是"这里应该渲染什么"。但 ReactElement 自己不参与调度，也不持有状态，它就像是一个目标图纸，只描绘，不实施。
 
 真正的转化发生在 React 的内部：
 
