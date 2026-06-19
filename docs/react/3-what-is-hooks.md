@@ -6,8 +6,6 @@
 
 这一篇就沿着这个问题往下看：Hooks 的状态放在哪里？多个 Hook 如何按顺序对应？一次 `setState` 又是如何进入更新队列，并在下一次 render 中得到新的 state？
 
----
-
 ## class 组件为什么天然有地方存状态
 
 在讨论函数组件之前，先看看古早的 class 组件。对它来说，我们要探讨的状态挂载问题是不存在的：因为每个 class 组件在 React 内部都会被实例化，状态就挂在这个实例的 `this.state` 上。
@@ -39,8 +37,6 @@ class Counter extends React.Component {
 
 所以 class 组件根本不需要“按顺序”之类的约束——状态有明确的归属（实例），更新有明确的入口（实例方法）。
 
----
-
 ## 函数组件的问题：函数执行结束后，局部变量会消失
 
 函数组件没有实例。它就是一个普普通通的函数，render 一次就是调用一次：
@@ -66,8 +62,6 @@ function Counter() {
 2. 对应问题：一个组件里有好几个 `useState` / `useEffect`，React 怎么知道这次的第二个 `useState` 对应上一次的哪一个？
 
 带着这两个问题，我们进入正题。
-
----
 
 ## Hooks 状态放在哪里：FiberNode.memoizedState
 
@@ -133,8 +127,6 @@ type UpdateQueue<S, A> = {
 - ……依次类推
 
 只要 React 在 render 时能拿到这个 FiberNode，就能顺着 `memoizedState` 得到整条 Hooks 链，从而恢复“上一次的状态”。
-
----
 
 ## Hooks 为什么必须按固定顺序调用：链表与 currentHook / workInProgressHook
 
@@ -423,8 +415,6 @@ function updateReducer<S, I, A>(reducer: (S, A) => S /* ... */): [S, Dispatch<A>
 
 这就完整闭环了：`setState` 把 action 入队 → 下一次 render 时 `updateReducer` 从头到尾把队列里的 action 用 reducer 依次折叠 → 得到新 state 写回 `hook.memoizedState` → 函数组件拿到新值。（真实源码这里还要处理 lane 优先级——低优先级的 update 会被跳过并记进 `baseQueue`，留到高优先级处理完再补算。这部分依赖 lanes 模型，我们放到下一篇讲。）
 
----
-
 ## Dispatcher 是什么：mount / update 阶段调用不同实现
 
 你可能注意到了一个矛盾：我们写代码时永远只 `import { useState } from 'react'`，调的是同一个 `useState`，但我们上面却提到了 mount 和 update 两种阶段的不同逻辑，那它怎么知道自己现在该走 `mountState` 还是 `updateReducer`？
@@ -493,8 +483,6 @@ function renderWithHooks(current, workInProgress, Component, props /* ... */) {
 - 二是开发模式下还能塞进第三套带检查的 dispatcher（检测你是否乱序调用、是否在条件里调用 Hook），不用污染正式实现；
 - 三是 render 结束后切回 `ContextOnlyDispatcher`，能直接拦截“在组件外调用 Hook”的错误。
 
----
-
 ## useEffect / useLayoutEffect：在 render 阶段登记 effect，而不是立刻执行
 
 最后简单看一下副作用类 Hook。这里只讲“登记 effect”，真正的执行时机属于 commit 阶段，留到副作用系统那篇展开。
@@ -560,8 +548,6 @@ function pushEffect(tag, create, inst, deps) {
 - `useEffect` 的 effect 挂在 fiber.updateQueue 上（整个组件一条环）
 
 而 `useEffect` 和 `useLayoutEffect` 在 render 阶段核心差异主要体现在两个 flag（`Passive` vs `Layout`）上。这两个 flag 决定了它们在 commit 阶段的执行时机不同——一个在绘制前同步、一个在绘制后异步。这部分逻辑我们留到副作用系统那一篇再展开。
-
----
 
 ## 小结
 
