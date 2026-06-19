@@ -22,5 +22,11 @@
       "title": "FiberNode：React 内核中的工作单元",
       "path": "/react/2-what-is-a-fiber-node.md"
     }
+  },
+  "3-what-is-hooks.md": {
+    "metadata": {
+      "title": "Hooks: React 如何在函数组件中保存状态和副作用",
+      "path": "/react/3-what-is-hooks.md"
+    }
   }
 }

@@ -1,4 +1,5 @@
 import { defineConfig } from 'vitepress';
+import { withMermaid } from 'vitepress-plugin-mermaid';
 import path from 'path';
 import fs from 'fs';
 import { fileURLToPath } from 'url';
@@ -134,7 +135,7 @@ function getSidebar() {
   return sidebar;
 }
 
-export default defineConfig({
+export default withMermaid(defineConfig({
   title: '技术笔记',
   description: '个人技术文章与学习笔记',
   base: basePath,
@@ -160,4 +161,4 @@ export default defineConfig({
     },
     socialLinks: [{ icon: 'github', link: 'https://github.com/wujinhjun/wujinhjun-note' }],
   },
-});
+}));

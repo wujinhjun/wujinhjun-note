@@ -77,6 +77,22 @@ function Counter() {
 
 通常来说每调用一个`useState`、`useEffect`、`useRef` 这类需要保存运行时信息的 Hook，React 就会在这条链表上生成一个 Hook 节点，多个 Hook 按调用顺序串成单链表。下面的代码实例的类型是 `useState` 特化，实际上源代码中是 `any`。当然，类似于 context 这种 non-stateful 的 hook 属于例外，我们可以后面展开。
 
+这条链表大致可以先想象成这样：
+
+```mermaid
+flowchart LR
+  Fiber["FunctionComponent Fiber"]
+  H1["Hook: useState"]
+  H2["Hook: useEffect"]
+  H3["Hook: useRef"]
+  End["null"]
+
+  Fiber -->|"memoizedState"| H1
+  H1 -->|"next"| H2
+  H2 -->|"next"| H3
+  H3 -->|"next"| End
+```
+
 这里的 `S` 是个泛型，具体是什么取决于你给 `useState` 的初始值。比如 `const [count, setCount] = useState(0)`，`0` 是 `number`，那 `S` 就是 `number`，这个节点就被具体化成（`BasicStateAction<number> = ((prev: number) => number) | number`），所以 `queue` 就是 `UpdateQueue<number, BasicStateAction<number>>`，里面排队的每个 `Update` 的 `action` 要么是一个新的 `number`，要么是一个 `(prev: number) => number` 的更新函数。
 
 当然，这里的字段展开比较彻底，可能会对其中的一些概念不太了解，没关系，我们稍后会一一讲透
@@ -229,11 +245,46 @@ function updateWorkInProgressHook(): Hook {
 - 但因为前面少了一个，它实际拿到的是“别人”的节点（比如把 `useEffect` 的节点当成 `useState` 的来用）
 - 状态、队列全部错位，轻则数据错乱，重则直接抛出上面那个 `Rendered more hooks...` 错误，生产环境爆炸（问，就是处理过别人写的条件式 hook……）
 
+正常情况下，调用顺序和旧链表节点是一一对齐的：
+
+```mermaid
+flowchart LR
+  subgraph Previous["上一次 render 的 Hook 链"]
+    A["Hook A<br/>useState"] --> B["Hook B<br/>useEffect"] --> C["Hook C<br/>useRef"]
+  end
+
+  subgraph Current["本次 render 的调用顺序"]
+    C1["第 1 次 Hook 调用<br/>useState"]
+    C2["第 2 次 Hook 调用<br/>useEffect"]
+    C3["第 3 次 Hook 调用<br/>useRef"]
+  end
+
+  C1 -.-> A
+  C2 -.-> B
+  C3 -.-> C
+```
+
+而一旦中间某个 Hook 被条件分支跳过，后面的对应关系就会整体错位：
+
+```mermaid
+flowchart LR
+  subgraph Previous["上一次 render 的 Hook 链"]
+    A["Hook A<br/>useState"] --> B["Hook B<br/>useEffect"] --> C["Hook C<br/>useRef"]
+  end
+
+  subgraph Current["本次 render 的调用顺序"]
+    C1["第 1 次 Hook 调用<br/>useState"]
+    C2["第 2 次 Hook 调用<br/>useRef"]
+  end
+
+  C1 -.-> A
+  C2 -.-> B
+  B --> Note["错位：这里原本是 useEffect 的 Hook 节点"]
+```
+
 当然，我们可以多问一步“如果希望 hook 能支持条件式调用，又可以怎么处理”：本质上这是一个设计哲学的问题，而非科学或者理论上的无法实现，而最常见的实现思路有包括但不限于：hook 带 key、链表换 map……但都会带来额外的性能开销和心智负担。
 
 所以可以更进一步地说：React 中不允许条件式调用 hook，是因为在它的概念中，hook 代表了一个组件的一份固定状态，无论发生了什么，一定会有这个状态。就类似于一辆车的轮子无论是什么品牌，一定会有轮子一样。
-
----
 
 ## useState 如何工作：Hook 对象、updateQueue、dispatch
 
@@ -324,6 +375,16 @@ queue.pending = update              // pending 更新为新的尾
 ```
 
 为什么要用环？因为这样只需要保存一个 `pending` 指针（指向尾），就能在 O(1) 时间内同时拿到**尾**（`pending`）和**头**（`pending.next`）：尾插方便，从头开始按顺序消费也方便。如果用普通单链表，要么尾插得每次遍历到末尾，要么得额外维护头尾两个指针。
+
+也就是说，`queue.pending` 指向的是环的尾部，而真正消费时会从 `queue.pending.next` 这个头部开始：
+
+```mermaid
+flowchart LR
+  Pending["queue.pending<br/>指向尾部"] --> U3["Update C<br/>尾"]
+  U3 --> U1["Update A<br/>头"]
+  U1 --> U2["Update B"]
+  U2 --> U3
+```
 
 ### update：把队列里的 update 依次“跑”一遍，算出新 state
 
