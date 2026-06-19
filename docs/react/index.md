@@ -28,9 +28,9 @@ React 相关技术文章与学习记录。
 
   这一篇会拆开 FiberNode 的关键字段，说明它为什么同时承载了树结构、组件状态、优先级信息和副作用标记。理解 FiberNode，才能真正理解 React 为什么能把“递归组件树”改造成“可调度的工作单元”。
 
-* [Hooks: React 如何在函数组件中保存状态和副作用 - WIP](./what-is-hooks.md)
+* [Hooks: React 如何在函数组件中保存状态和副作用](./3-what-is-hooks.md)
 
-  函数组件没有 `this`、也没有类实例，状态与「上一次渲染留下的信息」却必须在多次调用之间保持一致。这篇会从运行时视角说明：Hooks 如何通过固定的调用顺序与 Fiber 上的 `memoizedState` 链表对齐，Dispatcher 如何在 render 与 commit 之间切换语义，以及 `useEffect` / `useLayoutEffect` 这类 API 为何被设计成「在 render 里声明、在提交链路里执行」。
+  函数组件没有 `this`、也没有类实例，状态与「上一次渲染留下的信息」却必须在多次调用之间保持一致。这篇会从运行时视角说明：Hooks 如何通过固定的调用顺序与 Fiber 上的 `memoizedState` 链表对齐，Dispatcher 如何在 mount 与 update 之间切换 Hook 实现，以及 `useEffect` / `useLayoutEffect` 这类 API 为何被设计成「在 render 里声明、在提交链路里执行」。
 
 * [Scheduler 与 Lanes：React 如何决定谁先更新 - WIP](./scheduler-and-lanes.md)
 
