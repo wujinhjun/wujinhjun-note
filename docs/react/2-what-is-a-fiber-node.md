@@ -1,3 +1,8 @@
+---
+title: FiberNode：React 内核中的工作单元
+status: published
+---
+
 # FiberNode：React 内核中的工作单元
 
 前两篇文章聊完了两件事：一是 React 为什么非要从 Stack Reconciler 向 Fiber 演进，二是 Fiber 这套架构在概念层面试图解决什么问题。

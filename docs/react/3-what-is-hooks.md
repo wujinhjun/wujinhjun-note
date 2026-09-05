@@ -1,3 +1,8 @@
+---
+title: "Hooks: React 如何在函数组件中保存状态和副作用"
+status: published
+---
+
 # Hooks: React 如何在函数组件中保存状态和副作用
 
 在上一篇的结尾我们提到了，FiberNode 的 `memoizedState` 会保存函数组件的 Hooks 链表。
