@@ -33,12 +33,14 @@ function extractPageMetadata(mdFilePath) {
 
   const titleMatch = scope.match(/^\s*title:\s*["']?(.+?)["']?\s*$/m);
   const pathMatch = scope.match(/^\s*path:\s*["']?(.+?)["']?\s*$/m);
+  const statusMatch = fm.match(/^status:\s*["']?([a-z-]+)["']?\s*$/m);
 
   const title = titleMatch?.[1]?.trim();
   const pagePath = pathMatch?.[1]?.trim();
+  const status = statusMatch?.[1]?.trim();
 
-  if (!title && !pagePath) return null;
-  return { title, path: pagePath };
+  if (!title && !pagePath && !status) return null;
+  return { title, path: pagePath, status };
 }
 
 function loadSidebarConfig(dirPath) {
@@ -93,7 +95,7 @@ function getSidebar() {
         // 支持在任意目录放“wip 文件”（例如：wip-xxx.md / _wip-xxx.md / .wip-xxx.md）
         if (f.startsWith('wip') || f.startsWith('_wip') || f.startsWith('.wip'))
           return false;
-        return true;
+        return extractPageMetadata(path.join(dirPath, f))?.status === 'published';
       })
       .sort((a, b) => {
         if (a === 'index.md') return -1;

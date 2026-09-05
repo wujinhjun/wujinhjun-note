@@ -9,4 +9,4 @@ status: published
 
 ## 目录
 
-[2026-0514 AI 时代学习的一些思考](./learning-in-the-ai-era.md)
+<ArticleCatalog />
